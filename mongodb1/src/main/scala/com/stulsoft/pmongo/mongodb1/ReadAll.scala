@@ -24,7 +24,7 @@ object ReadAll extends App with StrictLogging {
       try {
         val db = client.getDatabase("pmongo")
         val count = new CountDownLatch(1)
-        db.getCollection("test-01")
+        db.getCollection("test_01")
           .find()
           .subscribe(
             (doc: Document) => logger.info(s"doc: $doc"), // onNext
