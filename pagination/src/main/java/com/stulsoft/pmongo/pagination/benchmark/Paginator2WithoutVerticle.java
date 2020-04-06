@@ -38,7 +38,7 @@ public class Paginator2WithoutVertx {
             });
             var pg = new Paginator2(client, "monitor");
 
-            var numberOfTests = 10;
+            var numberOfTests = 100;
             var pageSize = 20;
             var maxPageNumber = 30000 / pageSize;
             var random = new Random();
