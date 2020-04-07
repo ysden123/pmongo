@@ -4,7 +4,6 @@
 
 package com.stulsoft.pmongo.pagination.benchmark;
 
-import com.stulsoft.pmongo.pagination.MongoVerticle1;
 import com.stulsoft.pmongo.pagination.MongoVerticle2;
 import com.stulsoft.pmongo.pagination.StopWatch;
 import com.stulsoft.pmongo.pagination.Utils;
