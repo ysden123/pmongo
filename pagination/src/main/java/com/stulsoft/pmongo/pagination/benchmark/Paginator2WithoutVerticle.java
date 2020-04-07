@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Yuriy Stul
  */
-public class Paginator2WithoutVertx {
-    private static final Logger logger = LoggerFactory.getLogger(Paginator2WithoutVertx.class);
+public class Paginator2WithoutVerticle {
+    private static final Logger logger = LoggerFactory.getLogger(Paginator2WithoutVerticle.class);
 
     public static void main(String[] args) {
         logger.info("==>main");
@@ -30,7 +30,7 @@ public class Paginator2WithoutVertx {
         try {
             var sw = new StopWatch();
             var collection = "monitor";
-            var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator1Test");
+            var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator2WithoutVerticle");
             long[] collectionSize = {0L};
             client.count(collection, new JsonObject(), ar -> {
                 if (ar.succeeded())
@@ -59,9 +59,11 @@ public class Paginator2WithoutVertx {
             var averageDuration = totalDuration / numberOfTests;
 
             // Standard deviation
-            long[] s1 = {0L};
-            durations.forEach(duration -> s1[0] += Math.pow((duration - averageDuration), 2));
-            var standardDeviation = Math.sqrt(1.0 * s1[0] / (numberOfTests - 1));
+            long s1 = 0L;
+            for (var duration : durations) {
+                s1 += Math.pow((duration - averageDuration), 2);
+            }
+            var standardDeviation = Math.sqrt(1.0 * s1 / (numberOfTests - 1));
 
             logger.info("Test details: number of tests={}, page size={}, collection size={}",
                     numberOfTests, pageSize, collectionSize[0]);

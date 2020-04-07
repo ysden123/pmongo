@@ -5,6 +5,7 @@
 package com.stulsoft.pmongo.pagination.benchmark;
 
 import com.stulsoft.pmongo.pagination.MongoVerticle1;
+import com.stulsoft.pmongo.pagination.MongoVerticle2;
 import com.stulsoft.pmongo.pagination.StopWatch;
 import com.stulsoft.pmongo.pagination.Utils;
 import io.vertx.core.json.JsonObject;
@@ -20,18 +21,18 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Yuriy Stul
  */
-public class Paginator1WithVerticle {
-    private static final Logger logger = LoggerFactory.getLogger(Paginator1WithoutVerticle.class);
+public class Paginator2WithVerticle {
+    private static final Logger logger = LoggerFactory.getLogger(Paginator2WithVerticle.class);
 
     public static void main(String[] args) {
         logger.info("==>main");
         var vertx = Utils.createVertrx();
-        var verticleName = MongoVerticle1.class.getName();
+        var verticleName = MongoVerticle2.class.getName();
         var sw = new StopWatch();
         var numberOfTests = 100;
 
         var collection = "monitor";
-        var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator1WithVerticle");
+        var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator2WithVerticle");
         long[] collectionSize = {0L};
         client.count(collection, new JsonObject(), ar -> {
             if (ar.succeeded()) {
@@ -61,7 +62,7 @@ public class Paginator1WithVerticle {
                     var start = System.currentTimeMillis();
                     vertx
                             .eventBus()
-                            .send(MongoVerticle1.EB_ADDRESS, request, response -> {
+                            .send(MongoVerticle2.EB_ADDRESS, request, response -> {
                                 durations.add(System.currentTimeMillis() - start);
                                 counter.countDown();
                             });
