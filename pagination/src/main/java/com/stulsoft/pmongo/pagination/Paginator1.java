@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author Yuriy Stul
@@ -36,14 +37,15 @@ public class Paginator1 {
      *
      * @param pageSize   the page size (record number per page)
      * @param pageNumber the page number; 1st page has number 1
+     * @param query the query
      * @return list of objects
      */
-    public Single<List<JsonObject>> readPage(int pageSize, int pageNumber) {
+    public Single<List<JsonObject>> readPage(int pageSize, int pageNumber, JsonObject query) {
+        Objects.requireNonNull(query, "query should be specified");
         var thePageSize = Math.max(pageSize, 0);
         var thePageNumber = Math.max(pageNumber, 1);
 
         return Single.create(source -> {
-            var query = new JsonObject();
             var skip = thePageSize * (thePageNumber - 1);
             var findOptions = new FindOptions()
                     .setSkip(skip)

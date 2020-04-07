@@ -41,8 +41,9 @@ public class MongoVerticle1 extends AbstractVerticle {
     private void handler(Message<JsonObject> msg) {
         var pageSize = msg.body().getInteger("pageSize");
         var pageNumber = msg.body().getInteger("pageNumber");
+        var query = msg.body().getJsonObject("query");
         paginator
-                .readPage(pageSize, pageNumber)
+                .readPage(pageSize, pageNumber, query)
                 .subscribe(
                         response -> msg.reply(new JsonArray(response)),
                         err -> msg.fail(1, err.getMessage())

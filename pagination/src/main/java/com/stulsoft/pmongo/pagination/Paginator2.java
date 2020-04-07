@@ -36,15 +36,15 @@ public class Paginator2 {
      *
      * @param pageSize   the page size (record number per page)
      * @param pageNumber the page number; 1st page has number 1
-     * @return list of objects ???
+     * @param query the query
+     * @return response with details and result documents
      */
-    public Single<JsonObject> readPage(int pageSize, int pageNumber) {
+    public Single<JsonObject> readPage(int pageSize, int pageNumber, JsonObject query) {
+        Objects.requireNonNull(query, "query should be specified");
         var thePageSize = Math.max(pageSize, 0);
         var thePageNumber = Math.max(pageNumber, 1);
 
         return Single.create(source -> {
-            var query = new JsonObject();
-
             client.count(collection, query, arCount ->{
                if (arCount.succeeded()){
                    var count = arCount.result();
@@ -76,9 +76,6 @@ public class Paginator2 {
                        source.onError(arCount.cause());
                }
             });
-
-
-
         });
     }
 }

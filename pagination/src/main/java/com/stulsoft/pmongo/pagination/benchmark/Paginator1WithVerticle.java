@@ -29,11 +29,13 @@ public class Paginator1WithVerticle {
         var verticleName = MongoVerticle1.class.getName();
         var sw = new StopWatch();
         var numberOfTests = 100;
+        var query = new JsonObject()
+                .put("f3", new JsonObject().put("$gt", 10000));
 
         var collection = "monitor";
         var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator1WithVerticle");
         long[] collectionSize = {0L};
-        client.count(collection, new JsonObject(), ar -> {
+        client.count(collection, query, ar -> {
             if (ar.succeeded()) {
                 collectionSize[0] = ar.result();
                 client.close();
@@ -57,7 +59,8 @@ public class Paginator1WithVerticle {
                     var pageNumber = random.nextInt(maxPageNumber) + 1;
                     var request = new JsonObject()
                             .put("pageSize", pageSize)
-                            .put("pageNumber", pageNumber);
+                            .put("pageNumber", pageNumber)
+                            .put("query", query);
                     var start = System.currentTimeMillis();
                     vertx
                             .eventBus()

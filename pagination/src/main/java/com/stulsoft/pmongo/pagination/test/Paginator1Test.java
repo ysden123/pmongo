@@ -7,6 +7,7 @@ package com.stulsoft.pmongo.pagination.test;
 import com.stulsoft.pmongo.pagination.Paginator1;
 import com.stulsoft.pmongo.pagination.StopWatch;
 import com.stulsoft.pmongo.pagination.Utils;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,10 @@ public class Paginator1Test {
     private static void showPage(Paginator1 paginator, int pageSize,int pageNumber){
         var counter = new CountDownLatch(1);
         var sw = new StopWatch();
+        var query = new JsonObject()
+                .put("f3", new JsonObject().put("$gt", 10000));
         paginator
-                .readPage(pageSize, pageNumber)
+                .readPage(pageSize, pageNumber, query)
                 .subscribe(
                         objects -> {
                             logger.info("page number {}, number of rows is {}", pageNumber, objects.size());

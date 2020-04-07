@@ -27,7 +27,7 @@ public class Paginator2Test {
         var vertx = Utils.createVertrx();
 
         try {
-            var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator1Test");
+            var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator2Test");
             var pg = new Paginator2(client, "monitor");
             for (var pageNumber = 1; pageNumber <= 5; ++pageNumber) {
                 showPage(pg, 7, pageNumber);
@@ -46,8 +46,12 @@ public class Paginator2Test {
     private static void showPage(Paginator2 paginator, int pageSize, int pageNumber) {
         var counter = new CountDownLatch(1);
         var sw = new StopWatch();
+
+        var query = new JsonObject()
+                .put("f3", new JsonObject().put("$gt", 10000));
+
         paginator
-                .readPage(pageSize, pageNumber)
+                .readPage(pageSize, pageNumber, query)
                 .subscribe(
                         response -> {
                             logger.info("pageSize={}, pageNumber={}, lastPageNumber={}",

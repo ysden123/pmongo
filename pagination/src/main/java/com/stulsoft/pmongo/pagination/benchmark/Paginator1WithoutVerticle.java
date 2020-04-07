@@ -27,12 +27,15 @@ public class Paginator1WithoutVerticle {
         logger.info("==>main");
         var vertx = Utils.createVertrx();
 
+        var query = new JsonObject()
+                .put("f3", new JsonObject().put("$gt", 10000));
+
         try {
             var sw = new StopWatch();
             var collection = "monitor";
             var client = MongoClient.createShared(vertx, Utils.mongoConfig(), "Paginator1WithoutVerticle");
             long[] collectionSize = {0L};
-            client.count(collection, new JsonObject(), ar -> {
+            client.count(collection, query, ar -> {
                 if (ar.succeeded())
                     collectionSize[0] = ar.result();
             });
@@ -49,7 +52,7 @@ public class Paginator1WithoutVerticle {
 
             for (var testNumber = 1; testNumber <= numberOfTests; ++testNumber) {
                 var pageNumber = random.nextInt(maxPageNumber) + 1;
-                var duration = readPage(pg, pageSize, pageNumber);
+                var duration = readPage(pg, pageSize, pageNumber, query);
                 durations.add(duration);
                 totalDuration += duration;
                 minDuration = Long.min(minDuration, duration);
@@ -80,12 +83,12 @@ public class Paginator1WithoutVerticle {
         logger.info("<==main");
     }
 
-    private static long readPage(Paginator1 paginator, int pageSize, int pageNumber) {
+    private static long readPage(Paginator1 paginator, int pageSize, int pageNumber, JsonObject query) {
         var counter = new CountDownLatch(1);
         var start = System.currentTimeMillis();
         try {
             paginator
-                    .readPage(pageSize, pageNumber)
+                    .readPage(pageSize, pageNumber, query)
                     .subscribe(
                             objects -> counter.countDown(),
                             err -> {
