@@ -15,7 +15,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <vertx.version>3.6.0</vertx.version>
-		<login.version>2.13.1</login.version>
+		<login.version>2.13.3</login.version>
         <reactivex.version>2.1.13</reactivex.version>
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
     </properties>
