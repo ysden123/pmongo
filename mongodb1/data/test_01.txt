@@ -1,0 +1,6 @@
+{"name":"ys 01","age":22,"sum":33}
+{"name":"ys 02","age":2,"sum":41}
+{"name":"ys 03","age":12,"sum":4}
+{"name":"ys 04","age":34,"sum":5}
+{"name":"ys 05","age":17,"sum":88}
+{"name":"ys 06","age":22,"sum":99}

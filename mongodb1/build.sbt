@@ -6,17 +6,16 @@ lazy val root = (project in file(".")).
   settings(
     name := "mongodb1",
     version := "1.0.0",
-    scalaVersion := "2.13.1",
+    scalaVersion := "2.13.3",
     javacOptions ++= Seq("-source", "11"),
 
     libraryDependencies ++= {
       Seq(
-        "org.mongodb.scala" %% "mongo-scala-driver" % "4.0.1",
+        "org.mongodb.scala" %% "mongo-scala-driver" % "4.1.0",
         "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
         "org.apache.logging.log4j" % "log4j-api" % loggingVersion,
         "org.apache.logging.log4j" % "log4j-core" % loggingVersion,
         "org.apache.logging.log4j" % "log4j-slf4j-impl" % loggingVersion,
-//        "ch.qos.logback" % "logback-classic" % "1.2.3"
       )
     },
     scalacOptions in(Compile, doc) ++= Seq("-author"),
