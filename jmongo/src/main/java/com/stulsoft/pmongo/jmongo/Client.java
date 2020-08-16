@@ -21,8 +21,10 @@ public class Client {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
     public static MongoClient client() {
+        var location = System.getenv("LOCATION");
+        var pass=("office".equals(location))? "123456789": "admin";
         var credentials = MongoCredential
-                .createCredential("root", "admin", "admin".toCharArray());
+                .createCredential("root", "admin", pass.toCharArray());
         var client = MongoClients.create(
                 MongoClientSettings.builder()
                         .applyToClusterSettings(builder ->

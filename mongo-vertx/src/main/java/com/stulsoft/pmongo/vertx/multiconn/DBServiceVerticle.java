@@ -24,7 +24,7 @@ public class DBServiceVerticle extends AbstractVerticle {
     public static final String EB_ADDRESS = DBServiceVerticle.class.getName();
 
     private MongoClient client;
-    private final Random random = new Random(System.currentTimeMillis());
+    private Random random;
 
     public DBServiceVerticle() {
     }
@@ -32,8 +32,11 @@ public class DBServiceVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         super.start();
-        logger.info("Starting");
-        client = Utils.client(vertx, 5, 10);
+
+        random = new Random(System.currentTimeMillis());
+        var dataSource = "dataSource" + Thread.currentThread().getId();
+        logger.info("Starting with dataSource {}", dataSource);
+        client = Utils.client(vertx, 5, 10, dataSource);
         vertx.eventBus().consumer(EB_ADDRESS, this::handler);
     }
 
@@ -51,7 +54,7 @@ public class DBServiceVerticle extends AbstractVerticle {
                                 .put("age", random.nextInt(35)),
                         ar -> {
                             if (ar.succeeded()) {
-//                                logger.debug("Succeeded: {}", ar.result());
+                                logger.debug("Succeeded: {}", ar.result());
                                 msg.reply("Done");
                             } else {
                                 if (ar.cause() instanceof MongoWaitQueueFullException){

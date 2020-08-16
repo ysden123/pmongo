@@ -56,7 +56,8 @@ public interface Utils {
 
     static MongoClient client(final Vertx vertx) {
         var conf = new JsonObject()
-                .put(CONF_CONNECTION_STRING, "mongodb://root:admin@localhost:27017")
+                .put(CONF_CONNECTION_STRING,
+                        String.format("mongodb://root:%s@localhost:27017", password()))
                 .put(CONF_DB_NAME, "pmongo");
         return MongoClient.createShared(vertx, conf);
     }
@@ -74,10 +75,40 @@ public interface Utils {
      */
     static MongoClient client(final Vertx vertx, int maxPoolSize, int maxWaitQueueSize) {
         var conf = new JsonObject()
-                .put(CONF_CONNECTION_STRING, "mongodb://root:admin@localhost:27017")
+                .put(CONF_CONNECTION_STRING,
+                        String.format("mongodb://root:%s@localhost:27017", password()))
                 .put(CONF_DB_NAME, "pmongo")
                 .put(CONF_MAX_POOLS_SIZE, maxPoolSize)
                 .put(CONF_MAX_WAIT_QUEUE_SIZE, maxWaitQueueSize);
         return MongoClient.createShared(vertx, conf);
+    }
+
+    /**
+     * Creates a MongoClient
+     *
+     * @param vertx             the Vertx reference
+     * @param maxPoolSize       the max pool size; default is 50
+     * @param maxWaitQueueSize the maximum number
+     *                          of waiters for a connection
+     *                          to become available from the pool.
+     *                          Default value is 500.
+     * @return the MongoClient
+     */
+    static MongoClient client(final Vertx vertx, int maxPoolSize, int maxWaitQueueSize, String dataSource) {
+        var conf = new JsonObject()
+                .put(CONF_CONNECTION_STRING,
+                        String.format("mongodb://root:%s@localhost:27017", password()))
+                .put(CONF_DB_NAME, "pmongo")
+                .put(CONF_MAX_POOLS_SIZE, maxPoolSize)
+                .put(CONF_MAX_WAIT_QUEUE_SIZE, maxWaitQueueSize);
+        return MongoClient.createShared(vertx, conf, dataSource);
+    }
+
+    static String location(){
+        return System.getenv("LOCATION");
+    }
+
+    static String password(){
+        return ("office".equals(location()))? "123456789": "admin";
     }
 }
