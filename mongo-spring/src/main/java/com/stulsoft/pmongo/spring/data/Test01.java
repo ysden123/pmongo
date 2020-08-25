@@ -14,7 +14,7 @@ public class Test01 extends Document {
         super(document);
     }
 
-    public Test01 fromDocument(final Document document){
+    public static Test01 fromDocument(final Document document){
         return new Test01(document);
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * @author Yuriy Stul
@@ -28,24 +29,29 @@ public class AppConfiguration {
     @Bean(name = "AppMongoClient")
     public MongoClient mongoClient(@Autowired Environment env) {
         logger.info("==>mongoClient");
-        var credentials = MongoCredential
-                .createCredential(
-                        env.getProperty("mongo.user"),
-                        env.getProperty("mongo.authDB"),
-                        env.getProperty("mongo.pass").toCharArray()
-                );
+        try {
+            var credentials = MongoCredential
+                    .createCredential(
+                            Objects.requireNonNull(env.getProperty("mongo.user")),
+                            Objects.requireNonNull(env.getProperty("mongo.authDB")),
+                            Objects.requireNonNull(env.getProperty("mongo.pass")).toCharArray()
+                    );
 
-        var client = MongoClients.create(
-                MongoClientSettings.builder()
-                        .applyToClusterSettings(builder ->
-                                builder
-                                        .hosts(Collections
-                                                .singletonList(
-                                                        new ServerAddress(env.getProperty("mongo.host"),
-                                                                env.getProperty("mongo.port", Integer.class)))))
-                        .credential(credentials)
-                        .build());
-        logger.debug("Connected to cluster: {}", client.getClusterDescription());
-        return client;
+            var client = MongoClients.create(
+                    MongoClientSettings.builder()
+                            .applyToClusterSettings(builder ->
+                                    builder
+                                            .hosts(Collections
+                                                    .singletonList(
+                                                            new ServerAddress(Objects.requireNonNull(env.getProperty("mongo.host")),
+                                                                    Objects.requireNonNull(env.getProperty("mongo.port", Integer.class))))))
+                            .credential(credentials)
+                            .build());
+            logger.debug("Connected to cluster: {}", client.getClusterDescription());
+            return client;
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            throw ex;
+        }
     }
 }

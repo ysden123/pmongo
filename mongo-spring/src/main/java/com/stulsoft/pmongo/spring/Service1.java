@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,16 @@ public class Service1 {
 
         mongoOperations.find(query, Test013.class, "test_01")
                 .forEach(test01 -> logger.info("{}", test01));
+
+        query.addCriteria(Criteria.where("name").is("combined 1"));
+        mongoOperations.find(query, Test013.class, "test_01")
+                .forEach(test01 -> logger.info("{}", test01));
+
+        var q2 = new Document().append("name", "combined 1");
+        client
+                .getDatabase("pmongo")
+                .getCollection("test_01")
+                .find(q2)
+                .forEach(doc -> logger.info("{}", Test01.fromDocument(doc)));
     }
 }
