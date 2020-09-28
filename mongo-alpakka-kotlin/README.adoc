@@ -1,0 +1,3 @@
+= mongo-alpakka-kotlin
+
+Playing with MongoDB Alpakka on Kotlin

@@ -15,7 +15,8 @@ object Config {
   private lazy val config = ConfigFactory
     .parseFile(new File("application.conf"))
     .withFallback(ConfigFactory.load()).getConfig("config")
-  def mongoConnectionString():String={
+
+  def mongoConnectionString(): String = {
     config.getConfig("mongo").getString("connectionString")
   }
 }
