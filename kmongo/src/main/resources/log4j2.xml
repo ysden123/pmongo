@@ -8,7 +8,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %class.%M(%line) - %msg%n" />
         </Console>
-        <File name="File" fileName="logs/mongo-alpakka-kotlin.log" append="false">
+        <File name="File" fileName="logs/log-analyzer.log" append="true">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %class.%M(%line) - %msg%n" />
         </File>
     </Appenders>

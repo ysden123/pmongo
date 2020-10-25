@@ -1,9 +1,11 @@
 *.class
 *.log
 
-*/.idea/
-*/project/project/
-*/project/target/
-*/target/
+**/.idea/
+**/project/project/
+**/project/target/
+**/target/
+**/.gradle/
+**/build/
 
 *.iml

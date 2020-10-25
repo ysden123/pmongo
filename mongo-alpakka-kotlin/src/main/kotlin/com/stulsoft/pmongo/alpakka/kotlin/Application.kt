@@ -5,14 +5,13 @@
 package com.stulsoft.pmongo.alpakka.kotlin
 
 import akka.actor.ActorSystem
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
  * @author Yuriy Stul
  */
 object Application {
-    private val logger: Logger = LoggerFactory.getLogger("")
+    private val logger = LoggerFactory.getLogger("")
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -20,5 +19,7 @@ object Application {
         val system: ActorSystem = ActorSystem.create()
 
         Test01Manager.showAllDocuments(system)
+
+        system.terminate()
     }
 }

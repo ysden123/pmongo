@@ -13,12 +13,14 @@ import com.mongodb.reactivestreams.client.MongoClient
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import org.bson.Document
+import org.slf4j.LoggerFactory
 
 
 /**
  * @author Yuriy Stul
  */
 object Test01Manager {
+    private val logger = LoggerFactory.getLogger("")
     private val client: MongoClient = MongoClients.create(Config.mongoConnectionString())
     private val db: MongoDatabase = client.getDatabase("pmongo")
     private val test01Collection = db.getCollection("test_01")
@@ -26,6 +28,9 @@ object Test01Manager {
     fun showAllDocuments(system: ActorSystem) {
         val source: Source<Document, NotUsed> =
                 MongoSource.create(test01Collection.find())
-        source.runWith(Sink.foreach { d -> println(d) }, system)
+        source
+                .runWith(Sink.foreach { d -> logger.info("$d") }, system)
+                .toCompletableFuture()
+                .get()
     }
 }
