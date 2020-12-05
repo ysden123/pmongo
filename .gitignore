@@ -9,3 +9,7 @@
 **/build/
 
 *.iml
+
+mongo-scala/.bsp/
+
+mongo-alpakka/.bsp/
