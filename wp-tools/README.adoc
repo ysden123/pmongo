@@ -1,0 +1,8 @@
+= wp-tools
+
+== Configuration
+Put the configuration file with the "_application.conf_" name into a folder.
+
+Create the system environment variable with the "_wp-config_" name and the path to the folder.
+
+The "_application.conf_" file in the "_resources_" folder is an example of the configuration.
