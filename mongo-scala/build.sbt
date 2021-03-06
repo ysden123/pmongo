@@ -4,14 +4,14 @@ import sbt.Keys.{javacOptions, scalacOptions}
 
 ThisBuild / scalaVersion := "2.13.4"
 ThisBuild / organization := "com.stulsoft"
-ThisBuild / version := "1.0.1"
+ThisBuild / version := "1.0.2"
 
-lazy val loggingVersion = "2.13.3"
+lazy val loggingVersion = "2.14.0"
 
 lazy val app = (project in file("."))
   .settings(
     name := "mongo-scala",
-    libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "4.1.1",
+    libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "4.2.2",
 	
     libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
     libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % loggingVersion,
