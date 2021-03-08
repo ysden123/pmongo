@@ -8,7 +8,7 @@
         <Console name="Console">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
         </Console>
-        <File name="File" fileName="logs/wp-tools.log" append="true">
+        <File name="File" fileName="logs/wp-tools.log" append="false">
             <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger(%line) - %msg%n"/>
         </File>
     </Appenders>
