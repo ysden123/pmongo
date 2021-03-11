@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. Webpals
+ * Copyright (c) 2021. StulSoft
  */
 
 package com.stulsoft.wp.tools.validation
@@ -7,6 +7,7 @@ package com.stulsoft.wp.tools.validation
 import com.stulsoft.wp.tools.Constants.{ACC_ID, CONFIG, CONFIG_HISTORY, ETLMethod}
 import com.stulsoft.wp.tools.ReportType.ReportType
 import com.stulsoft.wp.tools.db.AccountScanner
+import com.stulsoft.wp.tools.db.DocumentUtils._
 import com.typesafe.scalalogging.StrictLogging
 import org.mongodb.scala.{Document, MongoDatabase}
 
@@ -53,43 +54,45 @@ class ConfigValidation extends StrictLogging {
         }
       }
 
-      val configHistory = account.getList(CONFIG_HISTORY, classOf[org.bson.Document])
-      if (configHistory != null && !configHistory.isEmpty) {
-        val configHistoryItem = configHistory.get(configHistory.size() - 1)
-        val configHistoryEtlMethod = configHistoryItem.getString(ETLMethod)
-        if (configHistoryEtlMethod == null) {
-          logger.error("Account {}: ETLMethod is missing in config history", accID)
-          errorCount += 1
-        } else {
-          val configInConfigHistoryItem = configHistoryItem.get(CONFIG, classOf[org.bson.Document])
-          if (configInConfigHistoryItem == null) {
-            logger.error("Account {}: configInConfigHistoryItem is missing in config history", accID)
-            errorCount += 1
-          } else {
-            //            val configByEtlMethod = configInConfigHistoryItem.get(configHistoryEtlMethod, classOf[org.bson.Document])
-            val configByEtlMethod = configInConfigHistoryItem.get(configHistoryEtlMethod, classOf[AnyRef])
-            if (configByEtlMethod == null) {
-              logger.error("Account {}: config is missing in config history for {} ETLMethod", accID, configHistoryEtlMethod)
+      account.getArray(CONFIG_HISTORY) match {
+        case Some(configHistoryList) =>
+          if (configHistoryList.nonEmpty) {
+            val configHistoryItem = configHistoryList.last
+            val configHistoryEtlMethod = configHistoryItem.getString(ETLMethod)
+            if (configHistoryEtlMethod == null) {
+              logger.error("Account {}: ETLMethod is missing in config history", accID)
               errorCount += 1
             } else {
-              configByEtlMethod match {
-                case s: String =>
-                  if (s.isEmpty || "{}".equals(s)) {
-                    logger.error("Account {}: config is empty string in config history for {} ETLMethod", accID, configHistoryEtlMethod)
+              configHistoryItem.getDocument(CONFIG) match {
+                case Some(configInConfigHistoryItem) =>
+                  val configByEtlMethod = configInConfigHistoryItem.get(configHistoryEtlMethod, classOf[AnyRef])
+                  if (configByEtlMethod == null) {
+                    logger.error("Account {}: config is missing in config history for {} ETLMethod", accID, configHistoryEtlMethod)
                     errorCount += 1
+                  } else {
+                    configByEtlMethod match {
+                      case s: String =>
+                        if (s.isEmpty || "{}".equals(s)) {
+                          logger.error("Account {}: config is empty string in config history for {} ETLMethod", accID, configHistoryEtlMethod)
+                          errorCount += 1
+                        }
+                      case c: org.bson.Document =>
+                        if (c.isEmpty) {
+                          logger.error("Account {}: config is empty object in config history for {} ETLMethod", accID, configHistoryEtlMethod)
+                          errorCount += 1
+                        }
+                      case x =>
+                        logger.error("Account {}: Unexpected object {} in config", accID, x.getClass.getName)
+                        errorCount += 1
+                    }
                   }
-                case c: org.bson.Document =>
-                  if (c.isEmpty) {
-                    logger.error("Account {}: config is empty object in config history for {} ETLMethod", accID, configHistoryEtlMethod)
-                    errorCount += 1
-                  }
-                case x =>
-                  logger.error("Account {}: Unexpected object {} in config", accID, x.getClass.getName)
+                case None =>
+                  logger.error("Account {}: configInConfigHistoryItem is missing in config history", accID)
                   errorCount += 1
               }
             }
           }
-        }
+        case None =>
       }
     }
     catch {

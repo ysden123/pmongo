@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. Webpals
+ * Copyright (c) 2021. StulSoft
  */
 
 package com.stulsoft.wp.tools
