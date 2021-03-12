@@ -9,7 +9,8 @@ import com.stulsoft.wp.tools.ReportType.ReportType
 import com.stulsoft.wp.tools.db.AccountScanner
 import com.stulsoft.wp.tools.db.DocumentUtils._
 import com.typesafe.scalalogging.StrictLogging
-import org.mongodb.scala.{Document, MongoDatabase}
+import org.bson.Document
+import org.mongodb.scala.MongoDatabase
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Future, Promise}
@@ -41,12 +42,12 @@ class ConfigValidation extends StrictLogging {
       val accID = account.getInteger(ACC_ID)
       val etlMethod = account.getString(ETLMethod)
       if (etlMethod != null) {
-        val config = account.get(CONFIG)
+        val config = account.getDocument(CONFIG)
         if (config.isEmpty) {
           logger.error("Account {}: root config is missing", accID)
           errorCount += 1
         } else {
-          val configByEtlMethod = config.head.asDocument()
+          val configByEtlMethod = config.head
           if (configByEtlMethod.entrySet().isEmpty) {
             logger.error("Account {}: root config has empty config for {} ETLMethod", accID, etlMethod)
             errorCount += 1

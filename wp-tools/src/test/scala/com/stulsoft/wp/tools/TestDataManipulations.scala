@@ -7,7 +7,7 @@ package com.stulsoft.wp.tools
 import com.stulsoft.wp.tools.Constants._
 import com.stulsoft.wp.tools.db.DocumentUtils._
 import com.typesafe.scalalogging.StrictLogging
-import org.mongodb.scala.bson.collection.immutable.Document
+import org.bson.Document
 import org.mongodb.scala.{MongoClient, MongoDatabase}
 
 import scala.concurrent.duration.DurationInt
@@ -43,39 +43,43 @@ object TestDataManipulations extends App with StrictLogging {
   def extractArray(db: MongoDatabase): Future[Unit] = {
     logger.info("==>extractArray")
 
+    def accountHandler(account: Document): Unit = {
+      logger.debug("account received")
+      try {
+        account.getArray("configHistory") match {
+          case Some(configHistory) =>
+            configHistory.foreach(configItem => {
+              val config = configItem.getDocument("config")
+              logger.debug("config: {}", config)
+            })
+          case None =>
+            logger.error("Not found 1")
+        }
+
+        account.getArray("configHistoryERROR") match {
+          case Some(configHistory) =>
+            configHistory.foreach(configItem => {
+              val config = configItem.getDocument("config")
+              logger.debug("config: {}", config)
+            })
+          case None =>
+            logger.error("Not found 2")
+        }
+
+      } catch {
+        case error: Exception => logger.error(error.getMessage)
+      }
+    }
+
     val promise = Promise[Unit]()
     val collection = db.getCollection("Accounts")
     collection
-      .find(Document(ACC_ID -> 18885, "reportType" -> ReportType.MerchantData.toString))
-      .sort(Document("timeStamp" -> -1))
+      .find(new Document(ACC_ID, 18885).append("reportType", ReportType.MerchantData.toString))
+      .sort(new Document("timeStamp", -1))
       .first()
       .subscribe(
         account => {
-          logger.debug("account received")
-          try {
-            account.getArray("configHistory") match {
-              case Some(configHistory) =>
-                configHistory.foreach(configItem => {
-                  val config = configItem.getDocument("config")
-                  logger.debug("config: {}", config)
-                })
-              case None =>
-                logger.error("Not found 1")
-            }
-
-            account.getArray("configHistoryERROR") match {
-              case Some(configHistory) =>
-                configHistory.foreach(configItem => {
-                  val config = configItem.getDocument("config")
-                  logger.debug("config: {}", config)
-                })
-              case None =>
-                logger.error("Not found 2")
-            }
-
-          } catch {
-            case error: Exception => logger.error(error.getMessage)
-          }
+          accountHandler(account)
           promise.success(None)
         },
         error => {
@@ -98,8 +102,8 @@ object TestDataManipulations extends App with StrictLogging {
     val promise = Promise[Unit]()
     val collection = db.getCollection("Accounts")
     collection
-      .find(Document(ACC_ID -> 18885, "reportType" -> ReportType.MerchantData.toString))
-      .sort(Document("timeStamp" -> -1))
+      .find(new Document(ACC_ID, 18885).append("reportType", ReportType.MerchantData.toString))
+      .sort(new Document("timeStamp", -1))
       .first()
       .subscribe(
         account => {
