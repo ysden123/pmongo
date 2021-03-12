@@ -5,7 +5,7 @@ lazy val alpakkaMongodbVersion = "2.0.2"
 lazy val mongoScalaDriver = "4.1.1"
 lazy val scalaLoggingVersion = "3.9.2"
 lazy val loggingVersion = "2.13.3"
-lazy val projectVersion = "1.0.0"
+lazy val projectVersion = "1.0.1"
 lazy val projectName = "mongo-alpakka"
 lazy val typeSafeConfVersion = "1.4.0"
 
@@ -13,7 +13,7 @@ lazy val commonSettings = Seq(
   organization := "com.stulsoft",
   version := projectVersion,
   javacOptions ++= Seq("-source", "11"),
-  scalaVersion := "2.13.4",
+  scalaVersion := "2.13.5",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
