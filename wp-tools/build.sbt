@@ -2,7 +2,7 @@ import sbt.Keys.{javacOptions, scalacOptions}
 
 ThisBuild / scalaVersion := "2.13.4"
 ThisBuild / organization := "com.stulsoft"
-ThisBuild / version := "1.0.2"
+ThisBuild / version := "1.1.1"
 
 lazy val loggingVersion = "2.14.0"
 
