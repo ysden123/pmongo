@@ -77,7 +77,7 @@ class ConfigValidation extends StrictLogging {
                           logger.error("Account {}: config is empty string in config history for {} ETLMethod", accID, configHistoryEtlMethod)
                           errorCount += 1
                         }
-                      case c: org.bson.Document =>
+                      case c: Document =>
                         if (c.isEmpty) {
                           logger.error("Account {}: config is empty object in config history for {} ETLMethod", accID, configHistoryEtlMethod)
                           errorCount += 1
