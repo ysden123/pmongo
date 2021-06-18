@@ -1,4 +1,4 @@
-package com.stulsoft.pmongo.spring;
+package com.stulsoft.pmongo.async;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.AbstractEnvironment;
+
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class StarterApplication implements CommandLineRunner {
@@ -27,6 +29,11 @@ public class StarterApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("==>run");
-        service1.showDocuments();
+
+        try{
+            service1.showDocuments().get(5, TimeUnit.SECONDS);
+        }catch (Exception ignore){
+
+        }
     }
 }

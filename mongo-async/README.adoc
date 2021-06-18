@@ -1,0 +1,3 @@
+= spring-starter-app
+
+Start maven project for Spring non-web application.

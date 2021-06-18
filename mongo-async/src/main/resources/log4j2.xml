@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2020. Yuriy Stul
+  ~ Copyright (c) 2021. Yuriy Stul
   -->
 
 <Configuration status="WARN">
@@ -8,12 +8,12 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
         </Console>
-        <File name="File" fileName="log/mongo-spring.log" append="true">
+        <File name="File" fileName="log/mongo-async.log" append="true">
             <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger(%line) - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>

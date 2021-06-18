@@ -58,5 +58,6 @@ public class Service1 {
                 .getCollection("test_01")
                 .find(q2)
                 .forEach(doc -> logger.info("{}", Test01.fromDocument(doc)));
+
     }
 }
