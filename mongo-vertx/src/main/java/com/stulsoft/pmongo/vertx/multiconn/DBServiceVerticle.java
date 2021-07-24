@@ -4,7 +4,6 @@
 
 package com.stulsoft.pmongo.vertx.multiconn;
 
-import com.mongodb.MongoWaitQueueFullException;
 import com.stulsoft.pmongo.vertx.Utils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.Message;
@@ -57,12 +56,15 @@ public class DBServiceVerticle extends AbstractVerticle {
                                 logger.debug("Succeeded: {}", ar.result());
                                 msg.reply("Done");
                             } else {
+                                logger.error(ar.cause().getMessage(), ar.cause());
+/*
                                 if (ar.cause() instanceof MongoWaitQueueFullException){
                                     var ex = (MongoWaitQueueFullException)ar.cause();
                                     logger.error("MWQFE: {}", ex.getMessage());
                                 }else {
                                     logger.error("Failed {}", ar.cause().getMessage());
                                 }
+*/
                                 msg.fail(123, ar.cause().getMessage());
                             }
                         }));

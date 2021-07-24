@@ -23,9 +23,9 @@ public interface Utils {
 
     static Vertx createVertx() {
         return Vertx.vertx(new VertxOptions()
-                .setEventBusOptions(new EventBusOptions()
-                        .setClustered(false)
-                        .setIdleTimeout(0))
+//                .setEventBusOptions(new EventBusOptions()
+//                        .setClustered(false)
+//                        .setIdleTimeout(0))
                 .setMaxEventLoopExecuteTime(2000000000000L)
                 .setMaxWorkerExecuteTime(60000000000000L)
                 .setBlockedThreadCheckInterval(1000000));
@@ -55,10 +55,14 @@ public interface Utils {
     }
 
     static MongoClient client(final Vertx vertx) {
+        return client(vertx, "pmongo");
+    }
+
+    static MongoClient client(final Vertx vertx, String dbName) {
         var conf = new JsonObject()
                 .put(CONF_CONNECTION_STRING,
                         String.format("mongodb://root:%s@localhost:27017", password()))
-                .put(CONF_DB_NAME, "pmongo");
+                .put(CONF_DB_NAME, dbName);
         return MongoClient.createShared(vertx, conf);
     }
 

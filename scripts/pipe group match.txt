@@ -1,0 +1,21 @@
+db.runCommand({
+    aggregate: "testAggCollection",
+    pipeline: [
+        { $sort: { t: -1 } },
+        {
+            $group: {
+                _id: "$a",
+                "theId": { $first: "$_id" },
+                "a": { $first: "$a" },
+                "t": { $first: "$t" }
+            }
+        },
+        {
+            $match: {
+                $and: [{
+                    "a": { $gt: 1 }
+                }]
+            }
+        }
+    ]
+})

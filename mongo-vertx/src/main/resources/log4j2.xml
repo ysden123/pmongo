@@ -6,13 +6,13 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{ HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
         </Console>
         <File name="File" fileName="log/mongo-vertx.log" append="false">
-            <PatternLayout pattern="%d{yyyy:MM:dd HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger(%line) - %msg%n"/>
         </File>
         <File name="Error" fileName="log/error.log" append="false">
-            <PatternLayout pattern="%d{yyyy:MM:dd HH:mm:ss.SSS} [%t] %-5level %logger(%line) - %msg%n"/>
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger(%line) - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
