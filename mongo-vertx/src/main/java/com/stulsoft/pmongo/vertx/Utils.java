@@ -23,12 +23,10 @@ public interface Utils {
 
     static Vertx createVertx() {
         return Vertx.vertx(new VertxOptions()
-//                .setEventBusOptions(new EventBusOptions()
-//                        .setClustered(false)
-//                        .setIdleTimeout(0))
-                .setMaxEventLoopExecuteTime(2000000000000L)
-                .setMaxWorkerExecuteTime(60000000000000L)
-                .setBlockedThreadCheckInterval(1000000));
+                .setEventBusOptions(new EventBusOptions().setIdleTimeout(0))
+                .setMaxEventLoopExecuteTime(2_000_000_000_000L)
+                .setMaxWorkerExecuteTime(60_000_000_000_000L)
+                .setBlockedThreadCheckInterval(1_000_000));
     }
 
     static Completable deployVerticles(final Vertx vertx, final String[] verticleNames) {
