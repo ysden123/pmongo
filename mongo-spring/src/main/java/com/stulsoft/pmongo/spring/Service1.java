@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClient;
 import com.stulsoft.pmongo.spring.data.Test01;
 import com.stulsoft.pmongo.spring.data.Test012;
 import com.stulsoft.pmongo.spring.data.Test013;
+import com.stulsoft.pmongo.spring.data.Test02;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,28 @@ public class Service1 {
                 .getCollection("test_01")
                 .find(q2)
                 .forEach(doc -> logger.info("{}", Test01.fromDocument(doc)));
+
+        mongoOperations.find(query, Document.class, "test_01")
+                .stream().map(Test02::new)
+                .forEach(test02 -> {
+                    logger.info("test02: {}", test02);
+                    test02.id().ifPresent(id -> logger.info(" id={}", id));
+                    test02.name().ifPresent(name -> logger.info(" name={}", name));
+                    test02.getLong("age").ifPresent(age -> logger.info(" age (long)={}", age));
+                    test02.getDouble("age").ifPresent(age -> logger.info(" age (double)={}", age));
+                    test02.age().ifPresent(age -> logger.info(" age={}", age));
+
+                    test02.withName("ys test 123 changed");
+                    test02.name().ifPresent(name -> logger.info(" name={}", name));
+
+                    test02.withAge(321L).withSum(756.098);
+                    logger.info("{}", test02);
+
+                    test02.withAge(null).withSum(null).withName(null);
+                    logger.info("{}", test02);
+                    logger.info("age={}", test02.age());
+
+                });
 
     }
 }

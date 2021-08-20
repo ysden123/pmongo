@@ -10,12 +10,12 @@
     </parent>
     <groupId>com.stulsoft.pmongo.spring</groupId>
     <artifactId>mongo-spring</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <name>mongo-spring</name>
     <description>Playing with MongoDB and Spring</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>16</java.version>
         <start-class>com.stulsoft.pmongo.spring.StarterApplication</start-class>
     </properties>
 
