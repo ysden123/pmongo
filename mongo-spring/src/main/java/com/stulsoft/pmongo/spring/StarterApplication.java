@@ -27,6 +27,6 @@ public class StarterApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("==>run");
-        service1.showDocuments();
+//        service1.showDocuments();
     }
 }
