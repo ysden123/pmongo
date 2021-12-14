@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.4.10</kotlin.version>
         <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-        <log.version>2.15.0</log.version>
+        <log.version>2.16.0</log.version>
     </properties>
 
     <dependencies>
