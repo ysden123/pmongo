@@ -38,7 +38,7 @@ public class UpdateProvider {
     private void ttt() {
         logger.info("==>ttt");
 //        update1();
-        update2();
+//        update2();
     }
 
     private void update1() {
