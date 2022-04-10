@@ -30,6 +30,8 @@ public class StarterApplication implements CommandLineRunner {
     public void run(String... args) {
         logger.info("==>run");
 //        service1.showDocuments();
+
         reportService.demoFindLastDocument();
+        reportService.demoShowAllLastDocuments();
     }
 }

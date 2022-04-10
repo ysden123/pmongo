@@ -1,6 +1,7 @@
 package com.stulsoft.pmongo.spring.latest;
 
 import com.mongodb.client.MongoClient;
+import com.mongodb.internal.operation.AggregateOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+//import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.stereotype.Service;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +56,22 @@ public class ReportService {
             var report = mongoOperations.findOne(query, Report.class, "reports");
             logger.info("{}", report);
             assert ((report != null) && ("name 10".equals(report.name())));
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        }
+    }
+
+    public void demoShowAllLastDocuments() {
+        MongoOperations mongoOperations = new MongoTemplate(client, "pmongo");
+        try {
+            var aggregation = newAggregation(
+                    sort(Sort.Direction.DESC, "reportType", "date"),
+                    group("reportType").first("$$ROOT").as("entry"),
+                    replaceRoot("entry")
+            );
+
+            var result = mongoOperations.aggregate(aggregation, "reports", Report.class);
+            result.getMappedResults().forEach(report -> logger.info("{}", report));
         } catch (Exception exception) {
             logger.error(exception.getMessage(), exception);
         }
