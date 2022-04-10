@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -60,11 +61,12 @@ public class ReportService {
     public void demoShowAllLastDocuments() {
         MongoOperations mongoOperations = new MongoTemplate(client, "pmongo");
         try {
+            AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
             var aggregation = newAggregation(
                     sort(Sort.Direction.DESC, "reportType", "date"),
                     group("reportType").first("$$ROOT").as("entry"),
                     replaceRoot("entry")
-            );
+            ).withOptions(options);
 
             var result = mongoOperations.aggregate(aggregation, "reports", Report.class);
             result.getMappedResults().forEach(report -> logger.info("{}", report));
