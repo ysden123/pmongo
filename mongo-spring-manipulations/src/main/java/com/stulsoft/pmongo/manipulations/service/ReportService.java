@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.replaceRoot;
@@ -40,7 +41,7 @@ public class ReportService {
     public String showAllReports() {
 //        var reports = mongoOperations.findAll(Report.class, "reports");
         var reports = mongoOperations.findAll(Report.class);
-        return reports.toString();
+        return reports.stream().map(Report::toString).collect(Collectors.joining("<br/>"));
     }
 
     public String showAllLastReport() {
@@ -54,7 +55,7 @@ public class ReportService {
 
 //            var result = mongoOperations.aggregate(aggregation, "reports", Report.class);
             var result = mongoOperations.aggregate(aggregation, Report.class, Report.class);
-            return result.getMappedResults().toString();
+            return result.getMappedResults().stream().map(Report::toString).collect(Collectors.joining("<br/>"));
         } catch (Exception exception) {
             logger.error(exception.getMessage(), exception);
             return exception.getMessage();
