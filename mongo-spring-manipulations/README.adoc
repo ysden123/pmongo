@@ -1,0 +1,3 @@
+= mongo-spring-manipulations
+
+Playing with MongoDB in Spring Boot framework.
