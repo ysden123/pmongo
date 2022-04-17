@@ -1,3 +1,12 @@
 = mongo-spring-manipulations
 
 Playing with MongoDB in Spring Boot framework.
+
+Query to list all last reports:
+```
+db.reports.aggregate([
+    {$sort: {"reportType":1, "date":-1}},
+    {$group: {_id: "$reportType", entry: {"$first":"$$ROOT"}} },
+    {$replaceRoot: { newRoot: "$entry" }}
+    ]);
+```

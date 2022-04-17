@@ -47,6 +47,15 @@ public class ReportService {
     public String showAllLastReport() {
         try {
             AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+
+            /*
+            db.reports.aggregate([
+                    {$sort: {"reportType":1, "date":-1}},
+            {$group: {_id: "$reportType", entry: {"$first":"$$ROOT"}} },
+            {$replaceRoot: { newRoot: "$entry" }}
+            ]);
+            */
+
             var aggregation = newAggregation(
                     sort(Sort.Direction.DESC, "reportType", "date"),
                     group("reportType").first("$$ROOT").as("entry"),
